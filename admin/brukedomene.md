@@ -31,8 +31,7 @@ identifiserer deg i de fleste tekniske sammenhenger.
 
 ## Bytte handle
 
-Foreløpig er det best å gjøre det ved å bruke Bluesky:
-[Bluesky](https://bsky.social/about/blog/4-28-2023-domain-handle-tutorial). 
+Foreløpig er det best å gjøre det ved å bruke [Bluesky](https://bsky.social/about/blog/4-28-2023-domain-handle-tutorial): 
 
 1. Logg deg inn med identiteten du vil endre.
 1. Trykk på "Settings"
@@ -58,7 +57,7 @@ Da skal du ha endret handle.
 Det gir mening at organisasjoner bruker sitt domene for sin offisielle
 kommunikasjon, slik at `@frittord.no` blir noe man følger for
 kommunikasjon fra Fritt ord. Men man kan ta et steg til: At de ansatte
-får sitt brukernavn under samme domene, `@brukernavn.frittord.no',
+får sitt brukernavn under samme domene, `@brukernavn.frittord.no`,
 omtrent som e-post. 
 
 Dette gjøres på samme måte. For store organisasjoner gjenstår det å
