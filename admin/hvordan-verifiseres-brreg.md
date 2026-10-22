@@ -13,7 +13,7 @@ og virksomhetens navn til dette.
 
 1. Du må [bruke virksomhetens domene](brukedomene) som handle, og det
    må være samsvar mellom enhetens hjemmeside og handle. For eksempel
-   er Stortingets hjemmeside angitt som `www.stortinget.no/` i
+   er Stortingets hjemmeside angitt som `www.stortinget.no` i
    enhetsregisteret. Vi sjekker først om dette også er brukt i
    Atmosphere, men vi prøver også å sjekke om `@stortinget.no` er
    brukt, det er langt vanligere. Hvis det passer, har din
@@ -22,9 +22,9 @@ og virksomhetens navn til dette.
    enhetsregisteret og slik det er på profilen. Her gjør vi noen
    sjekker:
    1. Vi godkjenner variasjoner i mellomrom og store og små bokstaver.
-   1. Vi "AS" på fra slutten
+   1. Vi fjerner "AS" på fra slutten.
    1. Hvis flere organisasjoner bruker samme hjemmeside, må
-   profilnavnet samsvare nøyaktig med en organisasjon 
+   profilnavnet samsvare nøyaktig med bare en organisasjon 
 1. Sett deg tilbake og vent en stund. Prosessen er helt automatisk, vi
    trenger ikke å gjøre noe manuelt. Verifiseringen vil dukke opp i
    f.eks. Mu som et lite rosa merke etter profilnavnet.
@@ -33,10 +33,12 @@ og virksomhetens navn til dette.
 ## Hvorfor så streng navnesjekk?
 
 Vi vurderer det som mer skadelig om vi verifiserer noen som ikke var
-ekte, enn om vi utelater noen som skulle vært verifisert. Systemet er
-også helt nytt.
+ekte, enn om vi utelater noen som skulle vært verifisert. 
 
 Det er ganske vanlig at det er flere underenheter som bruker
 hjemmesiden til den høyere enheten i registeret, og må være sikre på at
 vi ikke bruker feil enhet.
 
+Etterhvert som vi lærer mer om hvor vi ikke trenger å være så strenge,
+vil vi løse opp, men vi mener det er riktig å være forsiktige i nå
+mens systemet er helt nytt.
