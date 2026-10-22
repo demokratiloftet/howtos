@@ -2,7 +2,7 @@
 
 I Atmosphere velger hver enkelt app hvilke verifikatorer man stoler
 på, og vi har lagd en verifikator som flere apper som
-[Mu](https://mu.social/] og [Sifa](https://sifa.id/) har valgt å stole
+[Mu](https://mu.social/) og [Sifa](https://sifa.id/) har valgt å stole
 på.
 
 Den er basert på virksomhetsopplysningene i enhetsregisteret til
