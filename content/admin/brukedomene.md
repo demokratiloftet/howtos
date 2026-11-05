@@ -1,7 +1,5 @@
 # Hvordan bruker jeg mitt domene?
 
-[TL;DR](https://bsky.social/about/blog/4-28-2023-domain-handle-tutorial)
-
 ## Du er uavhengig
 
 I Atmosphere er ikke brukerne dine bundet til appens domene. La
