@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { remark } from "remark";
+import gfm from "remark-gfm";
 import html from "remark-html";
 
 export const SITE_NAME = "Demokratiløftet – dokumentasjon";
@@ -27,26 +28,64 @@ export type Section = {
   howtos: Howto[];
 };
 
+// Remove fenced code blocks so `# comments` inside them are never
+// mistaken for headings or paragraphs.
+function withoutCodeBlocks(markdown: string): string {
+  return markdown.replace(/^(```|~~~)[^\n]*\n[\s\S]*?^\1[ \t]*$/gm, "");
+}
+
 function titleFrom(markdown: string, fallback: string): string {
-  const match = markdown.match(/^#\s+(.+)$/m);
+  const match = withoutCodeBlocks(markdown).match(/^#[ \t]+(\S.*)$/m);
   return match ? match[1].trim() : fallback;
 }
 
-// First plain paragraph after the title, stripped of Markdown syntax.
+const LINK = /\[([^\]]*)\]\([^)]*\)/g;
+
+// First plain paragraph, stripped of Markdown syntax. Headings, lists,
+// quotes, code, HTML and paragraphs that are only a link are skipped.
 function excerptFrom(markdown: string): string {
   const paragraph =
-    markdown
+    withoutCodeBlocks(markdown)
       .split(/\n\s*\n/)
       .map((block) => block.trim())
-      .find((block) => block && !/^(#|[-*+] |\d+\.|>|```|\[TL;DR\])/i.test(block)) ?? "";
+      .find(
+        (block) =>
+          block &&
+          !/^(#|[-*+] |\d+\.|>|<|\|)/.test(block) &&
+          block.replace(LINK, "").trim() !== "",
+      ) ?? "";
 
   const text = paragraph
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/[`*_]/g, "")
+    .replace(LINK, "$1")
+    .replace(/[`*_~]/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
   return text.length > 160 ? `${text.slice(0, 157).trimEnd()} …` : text;
+}
+
+// Anything but letters (incl. æøå), digits, whitespace, "_" and "-".
+// Built with the constructor since tsconfig targets ES2017 (\p{} is ES2018).
+const NOT_SLUG_CHAR = new RegExp("[^\\p{L}\\p{N}\\s_-]", "gu");
+
+// GitHub-style heading ids, so `page.md#bytte-handle` links work on the site
+// too. Ids only contain letters, digits, "-" and "_", so they are safe in HTML.
+function addHeadingIds(html: string): string {
+  const used = new Map<string, number>();
+  return html.replace(/<h([1-6])>([\s\S]*?)<\/h\1>/g, (_m, level: string, inner: string) => {
+    const base =
+      inner
+        .replace(/<[^>]+>/g, "")
+        .replace(/&[#\w]+;/g, "")
+        .toLowerCase()
+        .replace(NOT_SLUG_CHAR, "")
+        .trim()
+        .replace(/\s/g, "-") || "section";
+    const count = used.get(base) ?? 0;
+    used.set(base, count + 1);
+    const id = count === 0 ? base : `${base}-${count}`;
+    return `<h${level} id="${id}">${inner}</h${level}>`;
+  });
 }
 
 function readMarkdown(section: string, slug: string): string {
@@ -97,13 +136,15 @@ export function getHowto(section: string, slug: string) {
   const howto = getAllHowtos().find((h) => h.section === section && h.slug === slug);
   if (!howto) return null;
 
-  const rendered = String(remark().use(html).processSync(readMarkdown(section, slug)));
+  const rendered = String(remark().use(gfm).use(html).processSync(readMarkdown(section, slug)));
 
   // Let authors link to other howtos as `brukedomene.md` (works on GitHub)
   // or `brukedomene` (works on the site); both resolve to the site page.
-  const contentHtml = rendered.replace(
-    /href="(?![a-z]+:|\/\/|#)([^"]+?)\.md(#[^"]*)?"/gi,
-    (_m, target: string, hash = "") => `href="${target}${hash}"`,
+  const contentHtml = addHeadingIds(
+    rendered.replace(
+      /href="(?![a-z]+:|\/\/|#)([^"]+?)\.md(#[^"]*)?"/gi,
+      (_m, target: string, hash = "") => `href="${target}${hash}"`,
+    ),
   );
 
   return { ...howto, contentHtml };

@@ -113,6 +113,26 @@ body {
   color: var(--muted);
   margin-bottom: 1.1rem;
 }
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.1rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--line);
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+}
+.prose th {
+  font-weight: 600;
+  background: var(--code-bg);
+}
+.prose del {
+  color: var(--muted);
+}
 .prose em {
   font-style: italic;
 }
