@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { cache } from "react";
 import { remark } from "remark";
 import gfm from "remark-gfm";
 import html from "remark-html";
@@ -112,7 +113,9 @@ function howtosIn(section: string): Howto[] {
     .sort((a, b) => a.title.localeCompare(b.title, "nb"));
 }
 
-export function getSections(): Section[] {
+// Wrapped in React cache() so the content folder is read once per render,
+// even though metadata, page and section lookups all call it.
+export const getSections = cache((): Section[] => {
   const known = Object.keys(SECTIONS);
   const rank = (id: string) => (known.includes(id) ? known.indexOf(id) : known.length);
 
@@ -120,7 +123,7 @@ export function getSections(): Section[] {
     .map((id) => ({ id, title: SECTIONS[id] ?? id, howtos: howtosIn(id) }))
     .filter((section) => section.howtos.length > 0)
     .sort((a, b) => rank(a.id) - rank(b.id) || a.title.localeCompare(b.title, "nb"));
-}
+});
 
 export function getSection(id: string): Section | null {
   return getSections().find((section) => section.id === id) ?? null;

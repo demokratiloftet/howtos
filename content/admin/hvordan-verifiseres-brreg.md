@@ -11,7 +11,7 @@ og virksomhetens navn til dette.
 
 ## Dette må du gjøre for å bli verifisert av oss
 
-1. Du må [bruke virksomhetens domene](brukedomene) som handle,
+1. Du må [bruke virksomhetens domene](brukedomene.md) som handle,
    og det må være samsvar mellom domenet og nettsiden som er registrert i
    Enhetsregisteret. For eksempel er Stortingets nettside registrert
    som `www.stortinget.no`. Vi sjekker derfor først om dette domenet brukes
@@ -24,7 +24,7 @@ og virksomhetens navn til dette.
    1. Vi godkjenner variasjoner i mellomrom og store og små bokstaver.
    1. Vi fjerner "AS" fra slutten.
    1. Hvis flere organisasjoner bruker samme hjemmeside, må
-   profilnavnet samsvare nøyaktig med bare en organisasjon 
+      profilnavnet samsvare nøyaktig med bare en organisasjon.
 1. Sett deg tilbake og vent en stund. Prosessen er helt automatisk –
    vi trenger ikke å gjøre noe manuelt. Verifiseringen vil dukke opp i
    f.eks. Mu som et lite rosa merke etter profilnavnet.

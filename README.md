@@ -1,6 +1,6 @@
 # Howtos
 
-This repository contains texts to guide people on how to do common tasks. The howtos will for now be in Norwegian, and will be available on TODO.
+This repository contains texts to guide people on how to do common tasks. The howtos will for now be in Norwegian, and will be available at https://dok.demokratiloftet.no.
 
 ## Adding a howto
 
@@ -10,7 +10,7 @@ This repository contains texts to guide people on how to do common tasks. The ho
 4. Open a pull request. Once merged, the site is rebuilt.
 
 Each folder is a category on the front page, and each file gets its own page at `/<folder>/<file-name>`.
-The first paragraph after the heading is used as a short description in lists and search.
+The first paragraph after the heading is used as a short description on the front page.
 
 ### Adding a category
 
