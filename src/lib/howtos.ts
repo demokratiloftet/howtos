@@ -3,7 +3,7 @@ import path from "node:path";
 import { remark } from "remark";
 import html from "remark-html";
 
-export const SITE_NAME = "Demokratiløftet – veiledninger";
+export const SITE_NAME = "Demokratiløftet – dokumentasjon";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 

@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="px-5 py-4 sm:px-8">
             <Link href="/" className="inline-flex items-baseline gap-1.5">
               <span className="font-serif text-lg font-semibold">Demokratiløftet</span>
-              <span className="text-muted">– veiledninger</span>
+              <span className="text-muted">– dokumentasjon</span>
             </Link>
           </div>
         </header>
