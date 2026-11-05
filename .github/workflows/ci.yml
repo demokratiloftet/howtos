@@ -8,8 +8,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: lint
+  # One job named "check" so it matches the required status check,
+  # and is billed as a single job.
+  check:
+    name: check
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,81 +37,8 @@ jobs:
       - name: lint
         run: pnpm lint
 
-  typecheck:
-    name: typecheck
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 12.16.1
-
-      - name: setup nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: typecheck
         run: pnpm typecheck
 
-  build:
-    name: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 12.16.1
-
-      - name: setup nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: build
         run: pnpm build
-
-  # Single required status check for branch protection ("check").
-  # Passes only if all jobs above succeed.
-  check:
-    name: check
-    if: always()
-    needs:
-      - lint
-      - typecheck
-      - build
-    runs-on: ubuntu-latest
-    permissions: {}
-
-    steps:
-      - name: verify all jobs passed
-        env:
-          RESULTS: ${{ join(needs.*.result, ' ') }}
-        run: |
-          echo "results: $RESULTS"
-          for result in $RESULTS; do
-            if [[ "$result" != "success" ]]; then
-              echo "a required job did not succeed" >&2
-              exit 1
-            fi
-          done
