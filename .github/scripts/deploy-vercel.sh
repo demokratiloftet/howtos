@@ -4,6 +4,10 @@ set -euo pipefail
 
 target="${1:-preview}"
 
+# Pin by setting VERCEL_CLI_VERSION (e.g. repository variable), defaults to latest.
+# One value is used for all three calls so a deploy never mixes CLI versions.
+vercel_cli="vercel@${VERCEL_CLI_VERSION:-latest}"
+
 if [[ -z "${VERCEL_TOKEN:-}" ]]; then
   echo "VERCEL_TOKEN is required" >&2
   exit 1
@@ -12,13 +16,11 @@ fi
 case "$target" in
   production)
     environment="production"
-    build_flags=(--prod)
-    deploy_flags=(--prod)
+    prod_flags=(--prod)
     ;;
   preview)
     environment="preview"
-    build_flags=()
-    deploy_flags=()
+    prod_flags=()
     ;;
   *)
     echo "unknown deployment target: $target" >&2
@@ -26,14 +28,18 @@ case "$target" in
     ;;
 esac
 
-pnpm dlx vercel@latest pull --yes --environment="$environment" --token="$VERCEL_TOKEN"
-SKIP_NEXT_BUILD_CHECKS=true pnpm dlx vercel@latest build "${build_flags[@]}" --token="$VERCEL_TOKEN"
+echo "using $vercel_cli"
+
+# ${arr[@]+"${arr[@]}"} expands an empty array safely under `set -u`,
+# also in bash < 4.4 (macOS).
+pnpm dlx "$vercel_cli" pull --yes --environment="$environment" --token="$VERCEL_TOKEN"
+SKIP_NEXT_BUILD_CHECKS=true pnpm dlx "$vercel_cli" build ${prod_flags[@]+"${prod_flags[@]}"} --token="$VERCEL_TOKEN"
 
 deployment_output="$(
-  pnpm dlx vercel@latest deploy \
+  pnpm dlx "$vercel_cli" deploy \
     --prebuilt \
     --archive=tgz \
-    "${deploy_flags[@]}" \
+    ${prod_flags[@]+"${prod_flags[@]}"} \
     --token="$VERCEL_TOKEN"
 )"
 

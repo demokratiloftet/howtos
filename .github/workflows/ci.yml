@@ -88,3 +88,28 @@ jobs:
 
       - name: build
         run: pnpm build
+
+  # Single required status check for branch protection ("check").
+  # Passes only if all jobs above succeed.
+  check:
+    name: check
+    if: always()
+    needs:
+      - lint
+      - typecheck
+      - build
+    runs-on: ubuntu-latest
+    permissions: {}
+
+    steps:
+      - name: verify all jobs passed
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "results: $RESULTS"
+          for result in $RESULTS; do
+            if [[ "$result" != "success" ]]; then
+              echo "a required job did not succeed" >&2
+              exit 1
+            fi
+          done
