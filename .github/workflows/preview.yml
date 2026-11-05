@@ -1,0 +1,105 @@
+name: preview
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - reopened
+      - synchronize
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy:
+    name: deploy preview
+    # Skipped until Vercel is set up: set repository variable VERCEL_ENABLED=true
+    if: >
+      vars.VERCEL_ENABLED == 'true' &&
+      contains(github.event.pull_request.labels.*.name, 'preview') &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+      issues: write
+      pull-requests: write
+    environment:
+      name: Preview
+      url: ${{ steps.deploy.outputs.deployment_url }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.16.1
+
+      - name: setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: deploy preview
+        id: deploy
+        run: bash ./.github/scripts/deploy-vercel.sh preview
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: comment preview url
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.deployment_url }}
+        with:
+          script: |
+            const marker = '<!-- howtos-preview-deployment -->';
+            const previewUrl = process.env.PREVIEW_URL;
+            const pullRequest = context.payload.pull_request;
+            const shortSha = pullRequest.head.sha.slice(0, 7);
+            const body = [
+              marker,
+              `preview deployment: ${previewUrl}`,
+              '',
+              `commit: \`${shortSha}\``,
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = pullRequest.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const existingComment = comments.find((comment) => {
+              return comment.user?.type === 'Bot' && comment.body?.includes(marker);
+            });
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existingComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }
