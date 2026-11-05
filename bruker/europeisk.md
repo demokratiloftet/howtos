@@ -12,11 +12,13 @@ I Eurosky Portal finnes det også en liste over europeiske apper.
 
 ## Om Atmosphere
 
-Selv om det er stort innslag av europeiske tjenester, så husk på at
-økosystemet er globalt. Det som er anderledes her er at alle tjenester
-hjelper hverandre bli bedre, både ved at mye bygges i fellesskap og
-mye bygges i sunn konkurranse. Det er denne helheten vi kaller the
-Atmosphere, de enkelte appene er ikke så viktig, du kan alltids flytte
-mellom dem.
+Selv om europeiske tjenester er godt representert, er det viktig 
+å huske at økosystemet er globalt. Det som gjør dette økosystemet spesielt, 
+er hvordan tjenestene bidrar til å gjøre hverandre bedre – både gjennom 
+samarbeid og felles utvikling, og gjennom sunn konkurranse.
+
+Det er denne helheten vi kaller *the Atmosphere*. Det er ikke de enkelte appene 
+som er det viktigste, men økosystemet de er en del av. Du står fritt til å bevege 
+deg mellom tjenestene, uten å være låst til én bestemt app.
 
 Se det store utvalget i [ATStore](https://atstore.fyi/)
