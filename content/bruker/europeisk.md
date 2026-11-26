@@ -1,5 +1,7 @@
 # Kan jeg bruke europeiske tjenester?
 
+Ja, for en rask oversikt, se [Europe Atmosphere](https://europatmosphe.re/).
+
 Ja, det er mange muligheter, men de begynner gjerne med
 [Eurosky](https://portal.eurosky.tech), der du kan lage en konto som
 fungerer med alle andre apper.
