@@ -1,8 +1,10 @@
 # Kan jeg bruke europeiske tjenester?
 
-Ja, det er mange muligheter, men de begynner gjerne med
-[Eurosky](https://portal.eurosky.tech), der du kan lage en konto som
-fungerer med alle andre apper.
+Ja, for en rask oversikt, se [Europe Atmosphere](https://europatmosphe.re/).
+
+Det er mange muligheter, men den korte historien som siden over peker
+på begynner med [Eurosky](https://portal.eurosky.tech), der du kan
+lage en konto som fungerer med alle andre apper.
 
 Eurosky er drevet av en stiftelse i Nederland. De utvikler også
 [Mu](https://mu.social/), som er en klassisk mikroblogg-app, men som
